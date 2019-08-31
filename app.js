@@ -14,5 +14,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log(`listening on", ${chalk.green("3000")}`);
+    debug(`listening on", ${chalk.green("3000")}`);
 });
