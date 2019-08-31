@@ -14,8 +14,7 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        allowNamedFunctions: 1, 
-        allowUnboundThis: 1
+     
     }
 };
 
