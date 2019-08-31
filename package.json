@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=app node app.js",
+    "start": "DEBUG=app nodemon app.js",
     "lint": "eslint app.js"
   },
   "author": "avil",
@@ -15,11 +15,24 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
-    "path": "^0.12.7"
+    "nodemon": "^1.19.1",
+    "path": "^0.12.7",
+    "pug": "^2.0.4"
   },
   "devDependencies": {
     "eslint": "^6.3.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
+  },
+  "nodemonconfig": {
+    "watch": [
+      "app.js"
+    ],
+    "ext": "ts",
+    "ignore": [
+      "*.test.ts",
+      "./node_modules/**/*"
+    ],
+    "delay": "2500"
   }
 }
