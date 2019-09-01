@@ -6,6 +6,8 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
+const bookRouter = express.Router();
+
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('css', express.static(path.join(__dirname, 'public', 'css')));
@@ -14,9 +16,21 @@ app.use('js', express.static(path.join(__dirname, 'public', 'js')));
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
+bookRouter.route('/books').get((req, res) => {
+  res.render('books', {
+    nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
+    title: 'Library',
+  });
+});
+app.use('/', bookRouter);
+
+
 app.get('/', (req, res) => {
   // res.sendFile(path.join(__dirname, 'views', 'index.html'));
-  res.render('index', { list: ['avil', 'suchi'], title: 'Library' });
+  res.render('index', {
+    nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
+    title: 'Library',
+  });
 });
 
 // eslint-disable-next-line no-magic-numbers
