@@ -8,6 +8,33 @@ const path = require('path');
 const app = express();
 const bookRouter = express.Router();
 
+const books = [
+  {
+    title: 'War and pease',
+    genre: 'Hostorical Fiction',
+    Author: 'Lov Tolstoy',
+    read: 'false',
+  },
+  {
+    title: 'War and pease',
+    genre: 'Hostorical Fiction',
+    Author: 'Lov Tolstoy',
+    read: 'false',
+  },
+  {
+    title: 'War and pease',
+    genre: 'Hostorical Fiction',
+    Author: 'Lov Tolstoy',
+    read: 'false',
+  },
+  {
+    title: 'War and pease',
+    genre: 'Hostorical Fiction',
+    Author: 'Lov Tolstoy',
+    read: 'false',
+  },
+];
+
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('css', express.static(path.join(__dirname, 'public', 'css')));
@@ -20,6 +47,7 @@ bookRouter.route('/books').get((req, res) => {
   res.render('books', {
     nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
     title: 'Library',
+    books,
   });
 });
 app.use('/', bookRouter);
