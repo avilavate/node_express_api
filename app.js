@@ -43,15 +43,20 @@ app.use('js', express.static(path.join(__dirname, 'public', 'js')));
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
-bookRouter.route('/books').get((req, res) => {
+bookRouter.route('/').get((req, res) => {
   res.render('books', {
     nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
     title: 'Library',
     books,
   });
 });
-app.use('/', bookRouter);
 
+bookRouter.route('/single').get((req,res)=>{
+  console.log("Called");
+  res.send("Single book view");
+});
+
+app.use('/books', bookRouter);
 
 app.get('/', (req, res) => {
   // res.sendFile(path.join(__dirname, 'views', 'index.html'));
