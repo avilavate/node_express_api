@@ -6,34 +6,9 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
-const bookRouter = express.Router();
 
-const books = [
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-];
+const bookRouter=require('./src/bookroutes');
+
 
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -42,19 +17,6 @@ app.use('js', express.static(path.join(__dirname, 'public', 'js')));
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
-
-bookRouter.route('/').get((req, res) => {
-  res.render('books', {
-    nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
-    title: 'Library',
-    books,
-  });
-});
-
-bookRouter.route('/single').get((req,res)=>{
-  console.log("Called");
-  res.send("Single book view");
-});
 
 app.use('/books', bookRouter);
 
