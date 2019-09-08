@@ -11,9 +11,11 @@ const bookRouter = require('./src/bookroutes');
 
 
 app.use(morgan('tiny'));
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static(path.join(__dirname, 'public'),{maxAge: '30 days'}));
 app.use('css', express.static(path.join(__dirname, 'public', 'css')));
 app.use('js', express.static(path.join(__dirname, 'public', 'js')));
+app.use('css', express.static(path.join('public', 'css')));
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');

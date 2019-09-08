@@ -43,10 +43,10 @@ bookRouter.route('/single/:id').get((req, res) => {
   const { id } = req.params;
   console.log(`Single book view book id: ${id}`);
 
-  res.render('books', {
+  res.render('booklist', {
     nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
     title: 'Library',
-    books: books[id],
+    book: books[id],
   });
 });
 
