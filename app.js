@@ -4,9 +4,23 @@ const chalk = require('chalk');
 // var debug = require("debug");
 const morgan = require('morgan');
 const path = require('path');
+const sql = require('mssql');
+
+const config = {
+  user: 'avilavate',
+  password: 'Ecil123!',
+  server: 'pluralsightlibraryserver.database.windows.net', // You can use 'localhost\\instance' to connect to named instance
+  database: 'LibraryDB',
+
+  options: {
+    encrypt: true // Use this if you're on Windows Azure
+  }
+};
+
+const dbconn = sql.connect(config).catch(err => console.log(err));
 
 const app = express();
-const nav=[{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }];
+const nav = [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }];
 
 const bookRouter = require('./src/bookroutes')(nav);
 
@@ -24,7 +38,19 @@ app.set('view engine', 'ejs');
 app.use('/books', bookRouter);
 
 app.get('/', (req, res) => {
-  // res.sendFile(path.join(__dirname, 'views', 'index.html'));
+  sql.close();
+  sql.connect(config).then(() => {
+    return sql.query('select * from book');
+  }).then(result => {
+    console.dir(result)
+  }).catch(err => {
+    console.dir(err);
+  });
+
+  sql.on('error', err => {
+    // ... error handler
+  });
+
   res.render('index', {
     nav,
     title: 'Library',
