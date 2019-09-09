@@ -17,7 +17,7 @@ const config = {
   }
 };
 
-const dbconn = sql.connect(config).catch(err => console.log(err));
+//const dbconn = sql.connect(config).catch(err => console.log(err));
 
 const app = express();
 const nav = [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }];
