@@ -31,7 +31,7 @@ function bookRoutFunction(nav) {
   const bookRouter = express.Router();
   bookRouter.route('/').get((req, res) => {
     res.render('books', {
-      nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
+      nav,
       title: 'Library',
       books,
     });
@@ -42,7 +42,7 @@ function bookRoutFunction(nav) {
     console.log(`Single book view book id: ${id}`);
 
     res.render('booklist', {
-      nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
+      nav,
       title: 'Library',
       book: books[id],
     });
