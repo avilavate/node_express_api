@@ -6,8 +6,9 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
+const nav=[{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }];
 
-const bookRouter = require('./src/bookroutes');
+const bookRouter = require('./src/bookroutes')(nav);
 
 
 app.use(morgan('tiny'));
@@ -25,7 +26,7 @@ app.use('/books', bookRouter);
 app.get('/', (req, res) => {
   // res.sendFile(path.join(__dirname, 'views', 'index.html'));
   res.render('index', {
-    nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
+    nav,
     title: 'Library',
   });
 });

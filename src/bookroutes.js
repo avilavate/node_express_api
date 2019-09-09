@@ -1,8 +1,3 @@
-
-const express = require('express');
-
-const bookRouter = express.Router();
-
 const books = [
   {
     title: 'War and pease',
@@ -30,24 +25,28 @@ const books = [
   },
 ];
 
+function bookRoutFunction(nav) {
+  const express = require('express');
 
-bookRouter.route('/').get((req, res) => {
-  res.render('books', {
-    nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
-    title: 'Library',
-    books,
+  const bookRouter = express.Router();
+  bookRouter.route('/').get((req, res) => {
+    res.render('books', {
+      nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
+      title: 'Library',
+      books,
+    });
   });
-});
 
-bookRouter.route('/single/:id').get((req, res) => {
-  const { id } = req.params;
-  console.log(`Single book view book id: ${id}`);
+  bookRouter.route('/single/:id').get((req, res) => {
+    const { id } = req.params;
+    console.log(`Single book view book id: ${id}`);
 
-  res.render('booklist', {
-    nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
-    title: 'Library',
-    book: books[id],
+    res.render('booklist', {
+      nav: [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }],
+      title: 'Library',
+      book: books[id],
+    });
   });
-});
-
-module.exports = bookRouter;
+  return bookRouter;
+}
+module.exports = bookRoutFunction;
