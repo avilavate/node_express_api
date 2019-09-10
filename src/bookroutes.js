@@ -65,21 +65,23 @@ function bookRoutFunction(nav) {
     sql.connect(config).then(() => {
       return sql.query('select * from book');
     }).then(result => {
-      console.dir(`From SQL ${result.recordset}`);
-      books= result.recordset;
-      res.render('books', {
-        nav,
-        title: 'Library',
-        books:  books
-      });
-    }).catch(err => {
-      console.dir(err);
-    });
+      console.dir(`From SQL ${result.recordset[0]}`);
+      debugger;
+      books= result.recordset[0];
+     
 
     sql.on('error', err => {
       // ... error handler
     });
 
+    res.render('books', {
+      nav,
+      title: 'Library',
+      books:  [books]
+    });
+  }).catch(err => {
+    console.dir(err);
+  });
     //SQL Method
 
 
