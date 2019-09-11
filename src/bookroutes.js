@@ -58,7 +58,7 @@ function bookRoutFunction(nav) {
   const express = require('express');
   const sql = require('mssql');
   const bookRouter = express.Router();
-  
+
   bookRouter.route('/').get((req, res) => {
     //Sql Method
     sql.close()
@@ -67,40 +67,44 @@ function bookRoutFunction(nav) {
     }).then(result => {
       console.dir(`From SQL ${result.recordset[0]}`);
       debugger;
-      books= result.recordset[0];
-     
+      books = result.recordset[0];
 
-    sql.on('error', err => {
-      // ... error handler
-    });
 
-    res.render('books', {
-      nav,
-      title: 'Library',
-      books:  [books]
+      sql.on('error', err => {
+        // ... error handler
+      });
+
+      res.render('books', {
+        nav,
+        title: 'Library',
+        books: [books]
+      });
+    }).catch(err => {
+      console.dir(err);
     });
-  }).catch(err => {
-    console.dir(err);
-  });
     //SQL Method
 
 
-    
+
   });
 
   bookRouter.route('/single/:id').get(async (req, res) => {
     const { id } = req.params;
-    console.log(`Single book view book id: ${id}`);
+    (async () => {
+      sql.close()
+      const conn = await sql.connect(config);
+      const result = await conn.query('select * from book');
 
-  //   const book = Getbooks().then(res => console.dir(res));
-  //   console.dir(`Book from SQL ${book}`);
-  //   res.render('booklist', {
-  //     nav,
-  //     title: 'Library',
-  //     book,
-  //     //books[id],
-  //   });
-   });
+      console.dir(`From SQL ${result.recordset[0]}`);
+      books = result.recordset[0];
+      res.render('booklist', {
+        nav,
+        title: 'Library',
+        book: books
+      });
+    })();
+
+  });
   return bookRouter;
 }
 module.exports = bookRoutFunction;
