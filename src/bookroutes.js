@@ -93,9 +93,9 @@ function bookRoutFunction(nav) {
     (async () => {
       sql.close()
       const conn = await sql.connect(config);
+      
       const result = await conn.query('select * from book');
 
-      console.dir(`From SQL ${result.recordset[0]}`);
       books = result.recordset[0];
       res.render('booklist', {
         nav,
