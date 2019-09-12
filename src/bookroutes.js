@@ -1,30 +1,3 @@
-let books = [
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-  {
-    title: 'War and pease',
-    genre: 'Hostorical Fiction',
-    Author: 'Lov Tolstoy',
-    read: 'false',
-  },
-];
-
 const config = {
   user: 'avilavate',
   password: 'Ecil123!',
@@ -35,24 +8,6 @@ const config = {
     encrypt: true // Use this if you're on Windows Azure
   }
 };
-
-// const Getbooks = () => {
-
-//   sql.close()
-//   sql.connect(config).then(() => {
-//     return sql.query('select * from book');
-//   }).then(result => {
-//     console.dir(`From SQL ${result.recordset}`);
-//     return result.recordset;
-//   }).catch(err => {
-//     console.dir(err);
-//   });
-
-//   sql.on('error', err => {
-//     // ... error handler
-//   });
-
-// };
 
 function bookRoutFunction(nav) {
   const express = require('express');
@@ -90,17 +45,30 @@ function bookRoutFunction(nav) {
 
   bookRouter.route('/single/:id').get(async (req, res) => {
     const { id } = req.params;
+    let book;
     (async () => {
-      sql.close()
-      const conn = await sql.connect(config);
-      
-      const result = await conn.query('select * from book');
+      // sql.close()
+      // const conn = await sql.connect(config);
 
-      books = result.recordset[0];
-      res.render('booklist', {
-        nav,
-        title: 'Library',
-        book: books
+      // const result = await conn.query('select * from book');
+
+      // books = result.recordset[0];
+      const { MongoClient, ObjectId } = require('mongodb');
+      const uri = "mongodb+srv://avilavate:avilavate123@ps-library-mongodb-cluster-drotv.azure.mongodb.net/test?retryWrites=true&w=majority";
+      const client = new MongoClient(uri, { useNewUrlParser: true });
+      client.connect(async err => {
+        console.dir(err);
+        const collection = await client.db("LibraryDB").collection("books");
+        collection.findOne({ _id: new ObjectId(id) }, (err, result) => {
+          book = result;
+          
+          res.render('booklist', {
+            nav,
+            title: 'Library',
+            book,
+          });
+        });
+       
       });
     })();
 
