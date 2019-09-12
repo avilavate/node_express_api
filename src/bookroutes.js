@@ -14,33 +14,42 @@ function bookRoutFunction(nav) {
   const sql = require('mssql');
   const bookRouter = express.Router();
 
-  bookRouter.route('/').get((req, res) => {
+  bookRouter.route('/').get(async (req, res) => {
     //Sql Method
-    sql.close()
-    sql.connect(config).then(() => {
-      return sql.query('select * from book');
-    }).then(result => {
-      console.dir(`From SQL ${result.recordset[0]}`);
-      debugger;
-      books = result.recordset[0];
+    // sql.close()
+    // sql.connect(config).then(() => {
+    //   return sql.query('select * from book');
+    // }).then(result => {
+    //   console.dir(`From SQL ${result.recordset[0]}`);
+    //   debugger;
+    //   books = result.recordset[0];
 
 
-      sql.on('error', err => {
-        // ... error handler
+    //   sql.on('error', err => {
+    //     // ... error handler
+    //   });
+    const { MongoClient } = require('mongodb');
+    const uri = "mongodb+srv://avilavate:avilavate123@ps-library-mongodb-cluster-drotv.azure.mongodb.net/test?retryWrites=true&w=majority";
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(async () => {
+      const db = await client.db('LibraryDB');
+      const collection = await client.db("LibraryDB").collection("books");
+      collection.find({},async (err, result)=>{
+        console.debug(err);
+        let books=await result.toArray();
+        res.render('books', {
+          nav,
+          title: 'Library',
+          books
+        });
       });
-
-      res.render('books', {
-        nav,
-        title: 'Library',
-        books: [books]
-      });
-    }).catch(err => {
-      console.dir(err);
+     
     });
+
+
+
+
     //SQL Method
-
-
-
   });
 
   bookRouter.route('/single/:id').get(async (req, res) => {
@@ -61,14 +70,14 @@ function bookRoutFunction(nav) {
         const collection = await client.db("LibraryDB").collection("books");
         collection.findOne({ _id: new ObjectId(id) }, (err, result) => {
           book = result;
-          
+
           res.render('booklist', {
             nav,
             title: 'Library',
             book,
           });
         });
-       
+
       });
     })();
 
