@@ -4,8 +4,13 @@ function authRouteFunction() {
     const authRouter = express.Router();
 
     authRouter.route('/signup').post((req, res) => {
-       // console.log('body' + req.body);
-       res.send(req.body);
+        req.logIn(req.body, () => {
+            res.redirect('/auth/profile');
+        });
+    });
+
+    authRouter.route('/profile').get((req, res) => {
+        res.json(req.user);
     });
 
     authRouter.route('/').get((req, res) => {

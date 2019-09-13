@@ -14,6 +14,10 @@ const session=require('express-session');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(session({'secret':'library'}));
+
+
 
 const nav = [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }];
 
@@ -34,6 +38,9 @@ app.set('view engine', 'ejs');
 app.use('/books', bookRouter);
 app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
+
+require('./src/config/passport')(app);
+
 
 app.get('/', (req, res) => {
 
