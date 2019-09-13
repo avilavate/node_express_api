@@ -4,18 +4,22 @@ const chalk = require('chalk');
 // var debug = require("debug");
 const morgan = require('morgan');
 const path = require('path');
-
-
-
+const bodyParser = require('body-parser');
+const cookieParser=require('cookie-parser');
+const passport=require('passport');
+const session=require('express-session');
 
 //const dbconn = sql.connect(config).catch(err => console.log(err));
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 const nav = [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }];
 
 const bookRouter = require('./src/bookroutes')(nav);
 const adminRouter = require('./src/adminRoutes')(nav);
-
+const authRouter = require('./src/authRoutes')();
 
 app.use(morgan('tiny'));
 
@@ -28,7 +32,8 @@ app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
 app.use('/books', bookRouter);
-app.use('/admin',adminRouter);
+app.use('/admin', adminRouter);
+app.use('/auth', authRouter);
 
 app.get('/', (req, res) => {
 
