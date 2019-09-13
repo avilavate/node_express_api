@@ -10,6 +10,7 @@ module.exports = function localStrategy() {
             },
             (username, passport, done) => {
                 const user = { username, passport };
+                
                 done(null, user);
             }
         ));

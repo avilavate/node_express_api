@@ -9,6 +9,7 @@ const cookieParser=require('cookie-parser');
 const passport=require('passport');
 const session=require('express-session');
 
+
 //const dbconn = sql.connect(config).catch(err => console.log(err));
 
 const app = express();
@@ -16,8 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({'secret':'library'}));
-
-
+require('./src/config/passport')(app);
 
 const nav = [{ title: 'Books', link: '/books' }, { title: 'Authors', link: '/author' }];
 
@@ -39,7 +39,7 @@ app.use('/books', bookRouter);
 app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
 
-require('./src/config/passport')(app);
+
 
 
 app.get('/', (req, res) => {
